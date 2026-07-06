@@ -1,0 +1,14 @@
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+httpx==0.28.1
+python-dotenv==1.0.1
+pydantic==2.10.4
+langgraph==0.2.60
+langchain-openai==0.2.14
+langchain-core==0.3.28
+markdown==3.7
+xhtml2pdf==0.2.16
+beautifulsoup4==4.12.3
+pytest==8.3.4
+pytest-asyncio==0.25.0
+respx==0.22.0

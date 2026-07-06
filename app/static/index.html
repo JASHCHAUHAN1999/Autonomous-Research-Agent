@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Autonomous Research Agent</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
+  <header class="border-b border-slate-700 px-6 py-4">
+    <h1 class="text-xl font-semibold">Autonomous Research Agent</h1>
+    <p class="text-sm text-slate-400">Plan, gather, reflect, and synthesize research reports.</p>
+  </header>
+
+  <div class="flex flex-col md:flex-row">
+    <!-- History sidebar -->
+    <aside class="md:w-64 border-r border-slate-700 p-3 shrink-0">
+      <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-400 mb-2">History</h2>
+      <div id="history" class="space-y-1"></div>
+    </aside>
+
+    <!-- Main column -->
+    <main class="flex-1 p-6 space-y-5 max-w-3xl">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm mb-1" for="provider">Provider</label>
+          <select id="provider"
+                  class="w-full bg-slate-800 border border-slate-600 rounded px-2 py-1"></select>
+        </div>
+        <div>
+          <label class="block text-sm mb-1" for="model">Model</label>
+          <input id="model-filter" type="text" placeholder="Filter models..."
+                 class="w-full bg-slate-800 border border-slate-600 rounded px-2 py-1 mb-1" />
+          <select id="model"
+                  class="w-full bg-slate-800 border border-slate-600 rounded px-2 py-1"></select>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm mb-1" for="api-key">API key
+          <span class="text-slate-400 font-normal">(optional — overrides the server's .env key)</span>
+        </label>
+        <div class="flex gap-2">
+          <input id="api-key" type="password" autocomplete="off"
+                 placeholder="Paste your provider API key, then Load models"
+                 class="flex-1 bg-slate-800 border border-slate-600 rounded px-2 py-1" />
+          <button id="load-models"
+                  class="bg-slate-700 hover:bg-slate-600 rounded px-3 py-1 text-sm whitespace-nowrap">
+            Load models
+          </button>
+        </div>
+        <p class="text-xs text-slate-500 mt-1">
+          Session-only: held in your browser, sent to your local server per request, never stored. Local use only.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm mb-1" for="tavily-key">Tavily API key
+            <span class="text-slate-400 font-normal">(enables the Tavily source)</span>
+          </label>
+          <input id="tavily-key" type="password" autocomplete="off"
+                 placeholder="Paste Tavily key to enable Tavily"
+                 class="w-full bg-slate-800 border border-slate-600 rounded px-2 py-1" />
+        </div>
+        <div>
+          <label class="block text-sm mb-1" for="newsapi-key">NewsAPI key
+            <span class="text-slate-400 font-normal">(enables the News source)</span>
+          </label>
+          <input id="newsapi-key" type="password" autocomplete="off"
+                 placeholder="Paste NewsAPI key to enable News"
+                 class="w-full bg-slate-800 border border-slate-600 rounded px-2 py-1" />
+        </div>
+      </div>
+
+      <fieldset>
+        <legend class="text-sm mb-1">Sources (leave all unchecked to let the agent auto-pick)</legend>
+        <div class="flex flex-wrap gap-4 text-sm">
+          <label class="inline-flex items-center gap-1">
+            <input type="checkbox" id="src-tavily" value="tavily" disabled /> Tavily
+            <span class="text-xs text-slate-500" id="hint-tavily">(add key)</span>
+          </label>
+          <label class="inline-flex items-center gap-1">
+            <input type="checkbox" id="src-wikipedia" value="wikipedia" /> Wikipedia
+          </label>
+          <label class="inline-flex items-center gap-1">
+            <input type="checkbox" id="src-news" value="news" disabled /> News
+            <span class="text-xs text-slate-500" id="hint-news">(add key)</span>
+          </label>
+          <label class="inline-flex items-center gap-1">
+            <input type="checkbox" id="src-web" value="web" /> Web
+          </label>
+        </div>
+      </fieldset>
+
+      <div>
+        <label class="block text-sm mb-1" for="query">Research question</label>
+        <textarea id="query" rows="3"
+                  class="w-full bg-slate-800 border border-slate-600 rounded px-2 py-2"
+                  placeholder="What would you like to research?"></textarea>
+      </div>
+
+      <button id="run"
+              class="bg-sky-600 hover:bg-sky-500 disabled:opacity-50 rounded px-4 py-2 font-medium">
+        Research
+      </button>
+
+      <section>
+        <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-400 mb-2">Progress</h2>
+        <ol id="timeline" class="space-y-1"></ol>
+      </section>
+
+      <section>
+        <div class="flex items-center gap-3 mb-2">
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-400">Report</h2>
+          <a id="export-md" class="hidden text-sky-400 text-sm underline" href="#">Export MD</a>
+          <a id="export-pdf" class="hidden text-sky-400 text-sm underline" href="#">Export PDF</a>
+        </div>
+        <div id="report" class="prose prose-invert max-w-none"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
